@@ -67,7 +67,7 @@ h2 {
 }
 
 .plates input:checked + label:before {
-  content: "🌮";
+  content: "🌮"; /* 여기에 체크박스 모양 설정 가능 */
 }
 
 .add-items {
