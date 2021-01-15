@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+  }
+</style>
+
+<button></button>
+<script>
+ //addEventListner(발생기준, 실행함수, 옵션)
+ // 옵션에는 대표적으로 capture(true -> 위에서 아래, false -> 아래서 위로)
+ // once -> true면 한 번 실행하고 remove
+ // 또한 e.stopPropagation을 사용하면 버블링을 막는다 (내 이벤트 발생 후 같은 트리안에 들어있는 태그의 이벤트 함수 전파를 막는다)
+ // 추가로 e.preventDefault같은 경우는 브라우저의 행동을 막는다 (a태그의 href이동 같은걸 막는다) 
+
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    e.stopPropagation(); // stop bubbling! - 하나만 클릭이벤트 적용되고 부모/자식 태그의 이벤트는 실행하지 않는다.
+    //console.log(this);
+  }
+
+  //document.body.addEventListener('click', logText);
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false  //capture : true로 하면 감싸고 있는 태그 중 가장 상단의 이벤트부터 // false면 가장 하위부터
+    , once : true // once를 적용하면 한 번 실행하고나면 event를 remove 시킨다
+  }));
+
+  button.addEventListener('click', () => {
+    console.log('Click!');
+  }, {
+    once : true
+  });
+
+</script>
+</body>
+</html>
